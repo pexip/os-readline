@@ -1,3 +1,9 @@
+readline (7.0-3pexip1) pexip; urgency=medium
+
+  * Prepare Pexip packaging
+
+ -- John-Mark Bell <jmb@pexip.com>  Fri, 06 Jul 2018 15:00:06 +0000
+
 readline (7.0-3) unstable; urgency=medium
 
   * Apply upstream patches 002 and 003. Closes: #852750.
