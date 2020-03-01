@@ -3,11 +3,10 @@ Section: libs
 Priority: important
 Maintainer: Pexip AS <packaging@pexip.com>
 XSBC-Pexip-Original-Maintainer: Matthias Klose <doko@debian.org>
-Standards-Version: 3.9.8
+Standards-Version: 4.1.4
 Build-Depends: debhelper (>= 9),
-  libtinfo-dev, lib32tinfo-dev [amd64 ppc64],
-  libncursesw5-dev (>= 5.6),
-  lib32ncursesw5-dev [amd64 ppc64], lib64ncurses5-dev [i386 powerpc sparc s390],
+  libncurses-dev,
+  lib32ncurses-dev [amd64 ppc64], lib64ncurses-dev [i386 powerpc sparc s390],
   mawk | awk, texinfo, autotools-dev,
   gcc-multilib [amd64 i386 kfreebsd-amd64 powerpc ppc64 s390 sparc]
 XS-Pexip-Upstream: http://ftp.debian.org/debian/ buster
@@ -61,7 +60,7 @@ Package: libreadline-dev
 Architecture: any
 Section: libdevel
 Priority: optional
-Depends: libreadline7 (= ${binary:Version}), libtinfo-dev, dpkg (>= 1.15.4) | install-info, ${misc:Depends}
+Depends: libreadline7 (= ${binary:Version}), libncurses-dev, dpkg (>= 1.15.4) | install-info, ${misc:Depends}
 Multi-Arch: same
 Conflicts: libreadline5-dev, libreadline6-dev, libreadline-gplv2-dev
 Suggests: readline-doc
@@ -78,28 +77,12 @@ Description: GNU readline and history libraries, development files
 
 Package: lib64readline-dev
 Architecture: i386 powerpc s390 sparc
-Depends: lib64readline7 (= ${binary:Version}), ${devxx:Depends}, ${misc:Depends}
+Depends: lib64readline7 (= ${binary:Version}), lib64ncurses-dev, ${devxx:Depends}, ${misc:Depends}
 Conflicts: lib64readline6-dev, lib64readline-gplv2-dev
 Provides: lib64readline6-dev
 Section: libdevel
 Priority: optional
 Description: GNU readline and history libraries, development files (64-bit)
- The GNU readline library aids in the consistency of user interface
- across discrete programs that need to provide a command line
- interface.
- .
- The GNU history library provides a consistent user interface for
- recalling lines of previously typed input.
-
-Package: libreadline7-dbg
-Architecture: any
-Depends: libreadline7 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
-Conflicts: libreadline-dbg
-Provides: libreadline-dbg
-Suggests: libreadline7-dev
-Section: debug
-Priority: extra
-Description: GNU readline and history libraries, debugging libraries
  The GNU readline library aids in the consistency of user interface
  across discrete programs that need to provide a command line
  interface.
@@ -136,7 +119,7 @@ Description: GNU readline and history libraries, run-time libraries (32-bit)
 
 Package: lib32readline-dev
 Architecture: amd64 ppc64
-Depends: lib32readline7 (= ${binary:Version}), lib32tinfo-dev, ${devxx:Depends}, ${misc:Depends}
+Depends: lib32readline7 (= ${binary:Version}), lib32ncurses-dev, ${devxx:Depends}, ${misc:Depends}
 Conflicts: lib32readline6-dev, lib32readline-gplv2-dev
 Provides: lib32readline6-dev
 Section: libdevel
