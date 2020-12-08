@@ -1,6 +1,6 @@
 <HTML>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!-- Created on September, 7  2016 by texi2html 1.64 -->
+<!-- Created on October, 30  2020 by texi2html 1.64 -->
 <!-- 
 Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
             Karl Berry  <karl@freefriends.org>
@@ -118,6 +118,16 @@ History expansions are introduced by the appearance of the
 history expansion character, which is <SAMP>`!'</SAMP> by default.
 </P><P>
 
+History expansion implements shell-like quoting conventions:
+a backslash can be used to remove the special handling for the next character;
+single quotes enclose verbatim sequences of characters, and can be used to
+inhibit history expansion;
+and characters enclosed within double quotes may be subject to history
+expansion, since backslash can escape the history expansion character,
+but single quotes may not, since they are not treated specially within
+double quotes.
+</P><P>
+
 <BLOCKQUOTE><TABLE BORDER=0 CELLSPACING=0> 
 <TR><TD ALIGN="left" VALIGN="TOP"><A HREF="history.html#SEC3">1.1.1 Event Designators</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">How to specify which history line to use.</TD></TR>
 <TR><TD ALIGN="left" VALIGN="TOP"><A HREF="history.html#SEC4">1.1.2 Word Designators</A></TD><TD>&nbsp;&nbsp;</TD><TD ALIGN="left" VALIGN="TOP">Specifying which words are of interest.</TD></TR>
@@ -182,12 +192,14 @@ containing <VAR>string</VAR>.
 The trailing
 <SAMP>`?'</SAMP> may be omitted if the <VAR>string</VAR> is followed immediately by
 a newline.
+If <VAR>string</VAR> is missing, the string from the most recent search is used;
+it is an error if there is no previous search string.
 <P>
 
 <DT><CODE>^<VAR>string1</VAR>^<VAR>string2</VAR>^</CODE>
 <DD>Quick Substitution.  Repeat the last command, replacing <VAR>string1</VAR>
 with <VAR>string2</VAR>.  Equivalent to
-<CODE>!!:s/<VAR>string1</VAR>/<VAR>string2</VAR>/</CODE>.
+<CODE>!!:s^<VAR>string1</VAR>^<VAR>string2</VAR>^</CODE>.
 <P>
 
 <DT><CODE>!#</CODE>
@@ -264,7 +276,8 @@ Here are the word designators:
 <P>
 
 <DT><CODE>%</CODE>
-<DD>The word matched by the most recent <SAMP>`?<VAR>string</VAR>?'</SAMP> search.
+<DD>The first word matched by the most recent <SAMP>`?<VAR>string</VAR>?'</SAMP> search,
+if the search string begins with a character that is part of a word.
 <P>
 
 <DT><CODE><VAR>x</VAR>-<VAR>y</VAR></CODE>
@@ -283,6 +296,7 @@ the empty string is returned in that case.
 
 <DT><CODE><VAR>x</VAR>-</CODE>
 <DD>Abbreviates <SAMP>`<VAR>x</VAR>-$'</SAMP> like <SAMP>`<VAR>x</VAR>*'</SAMP>, but omits the last word.
+If <SAMP>`x'</SAMP> is missing, it defaults to 0.
 <P>
 
 </DL>
@@ -312,6 +326,7 @@ previous command is used as the event.
 
 After the optional word designator, you can add a sequence of one or more
 of the following modifiers, each preceded by a <SAMP>`:'</SAMP>.
+These modify, or edit, the word or words selected from the history event.
 </P><P>
 
 <DL COMPACT>
@@ -339,11 +354,19 @@ the basename.
 
 <DT><CODE>s/<VAR>old</VAR>/<VAR>new</VAR>/</CODE>
 <DD>Substitute <VAR>new</VAR> for the first occurrence of <VAR>old</VAR> in the
-event line.  Any delimiter may be used in place of <SAMP>`/'</SAMP>.
+event line.
+Any character may be used as the delimiter in place of <SAMP>`/'</SAMP>.
 The delimiter may be quoted in <VAR>old</VAR> and <VAR>new</VAR>
 with a single backslash.  If <SAMP>`&#38;'</SAMP> appears in <VAR>new</VAR>,
 it is replaced by <VAR>old</VAR>.  A single backslash will quote
-the <SAMP>`&#38;'</SAMP>.  The final delimiter is optional if it is the last
+the <SAMP>`&#38;'</SAMP>.
+If <VAR>old</VAR> is null, it is set to the last <VAR>old</VAR>
+substituted, or, if no previous history substitutions took place,
+the last <VAR>string</VAR>
+in a !?<VAR>string</VAR><CODE>[?]</CODE>
+search.
+If <VAR>new</VAR> is is null, each matching <VAR>old</VAR> is deleted.
+The final delimiter is optional if it is the last
 character on the input line.
 <P>
 
@@ -359,7 +382,8 @@ or with <SAMP>`&#38;'</SAMP>.
 <P>
 
 <DT><CODE>G</CODE>
-<DD>Apply the following <SAMP>`s'</SAMP> modifier once to each word in the event.
+<DD>Apply the following <SAMP>`s'</SAMP> or <SAMP>`&#38;'</SAMP> modifier once to each word
+in the event.
 <P>
 
 </DL>
@@ -422,7 +446,7 @@ data with each line, and utilize information from previous lines in
 composing new ones. 
 </P><P>
 
-The programmer using the History library has available functions
+A programmer using the History library has available functions
 for remembering lines on a history list, associating arbitrary data
 with a line, removing lines from the list, searching through the list
 for a line containing an arbitrary text string, and referencing any line
@@ -438,7 +462,7 @@ in new commands.  The basic history manipulation commands are similar to
 the history substitution provided by <CODE>csh</CODE>.
 </P><P>
 
-If the programmer desires, he can use the Readline library, which
+The programmer can also use the Readline library, which
 includes some history manipulation by default, and has the added
 advantage of command line editing.
 </P><P>
@@ -620,6 +644,9 @@ parameters managing the list itself.
 <DT><U>Function:</U> void <B>add_history</B> <I>(const char *string)</I>
 <DD>Place <VAR>string</VAR> at the end of the history list.  The associated data
 field (if any) is set to <CODE>NULL</CODE>.
+If the maximum number of history entries has been set using
+<CODE>stifle_history()</CODE>, and the new number of history entries would exceed
+that maximum, the oldest history entry is removed.
 </DL>
 </P><P>
 
@@ -670,6 +697,7 @@ of an invalid <VAR>which</VAR>, a <CODE>NULL</CODE> pointer is returned.
 <DL>
 <DT><U>Function:</U> void <B>stifle_history</B> <I>(int max)</I>
 <DD>Stifle the history list, remembering only the last <VAR>max</VAR> entries.
+The history list will contain only <VAR>max</VAR> entries at a time.
 </DL>
 </P><P>
 
@@ -740,10 +768,12 @@ pointer.
 <A NAME="IDX17"></A>
 <DL>
 <DT><U>Function:</U> HIST_ENTRY * <B>history_get</B> <I>(int offset)</I>
-<DD>Return the history entry at position <VAR>offset</VAR>, starting from
-<CODE>history_base</CODE> (see section <A HREF="history.html#SEC17">2.4 History Variables</A>).
-If there is no entry there, or if <VAR>offset</VAR>
-is greater than the history length, return a <CODE>NULL</CODE> pointer.
+<DD>Return the history entry at position <VAR>offset</VAR>.
+The range of valid
+values of <VAR>offset</VAR> starts at <CODE>history_base</CODE> and ends at
+<VAR>history_length</VAR> - 1 (see section <A HREF="history.html#SEC17">2.4 History Variables</A>).
+If there is no entry there, or if <VAR>offset</VAR> is outside the valid
+range, return a <CODE>NULL</CODE> pointer.
 </DL>
 </P><P>
 
@@ -1015,7 +1045,7 @@ to the "normal" terminating characters.
 <DD>Return an array of tokens parsed out of <VAR>string</VAR>, much as the
 shell might.  The tokens are split on the characters in the
 <VAR>history_word_delimiters</VAR> variable,
-and shell quoting conventions are obeyed.
+and shell quoting conventions are obeyed as described below.
 </DL>
 </P><P>
 
@@ -1141,12 +1171,31 @@ carriage return, and <SAMP>`='</SAMP>.
 <A NAME="IDX46"></A>
 <DL>
 <DT><U>Variable:</U> int <B>history_quotes_inhibit_expansion</B>
-<DD>If non-zero, double-quoted words are not scanned for the history expansion
-character or the history comment character.  The default value is 0.
+<DD>If non-zero, the history expansion code implements shell-like quoting:
+single-quoted words are not scanned for the history expansion
+character or the history comment character, and double-quoted words may
+have history expansion performed, since single quotes are not special
+within double quotes.
+The default value is 0.
 </DL>
 </P><P>
 
 <A NAME="IDX47"></A>
+<DL>
+<DT><U>Variable:</U> int <B>history_quoting_state</B>
+<DD>An application may set this variable to indicate that the current line
+being expanded is subject to existing quoting. If set to <SAMP>`''</SAMP>, the
+history expansion function will assume that the line is single-quoted and
+inhibit expansion until it reads an unquoted closing single quote; if set
+to <SAMP>`"'</SAMP>, history expansion will assume the line is double quoted until
+it reads an unquoted closing double quote. If set to zero, the default,
+the history expansion function will assume the line is not quoted and
+treat quote characters within the line as described above.
+This is only effective if <VAR>history_quotes_inhibit_expansion</VAR> is set.
+</DL>
+</P><P>
+
+<A NAME="IDX48"></A>
 <DL>
 <DT><U>Variable:</U> rl_linebuf_func_t * <B>history_inhibit_expansion_function</B>
 <DD>This should be set to the address of a function that takes two arguments:
@@ -1971,13 +2020,14 @@ to permit their use in free software.
 <TR><TD></TD><TD valign=top><A HREF="history.html#IDX17"><CODE>history_get</CODE></A></TD><TD valign=top><A HREF="history.html#SEC12">2.3.3 Information About the History List</A></TD></TR>
 <TR><TD></TD><TD valign=top><A HREF="history.html#IDX3"><CODE>history_get_history_state</CODE></A></TD><TD valign=top><A HREF="history.html#SEC10">2.3.1 Initializing History and State Management</A></TD></TR>
 <TR><TD></TD><TD valign=top><A HREF="history.html#IDX18"><CODE>history_get_time</CODE></A></TD><TD valign=top><A HREF="history.html#SEC12">2.3.3 Information About the History List</A></TD></TR>
-<TR><TD></TD><TD valign=top><A HREF="history.html#IDX47"><CODE>history_inhibit_expansion_function</CODE></A></TD><TD valign=top><A HREF="history.html#SEC17">2.4 History Variables</A></TD></TR>
+<TR><TD></TD><TD valign=top><A HREF="history.html#IDX48"><CODE>history_inhibit_expansion_function</CODE></A></TD><TD valign=top><A HREF="history.html#SEC17">2.4 History Variables</A></TD></TR>
 <TR><TD></TD><TD valign=top><A HREF="history.html#IDX13"><CODE>history_is_stifled</CODE></A></TD><TD valign=top><A HREF="history.html#SEC11">2.3.2 History List Management</A></TD></TR>
 <TR><TD></TD><TD valign=top><A HREF="history.html#IDX37"><CODE>history_length</CODE></A></TD><TD valign=top><A HREF="history.html#SEC17">2.4 History Variables</A></TD></TR>
 <TR><TD></TD><TD valign=top><A HREF="history.html#IDX14"><CODE>history_list</CODE></A></TD><TD valign=top><A HREF="history.html#SEC12">2.3.3 Information About the History List</A></TD></TR>
 <TR><TD></TD><TD valign=top><A HREF="history.html#IDX38"><CODE>history_max_entries</CODE></A></TD><TD valign=top><A HREF="history.html#SEC17">2.4 History Variables</A></TD></TR>
 <TR><TD></TD><TD valign=top><A HREF="history.html#IDX45"><CODE>history_no_expand_chars</CODE></A></TD><TD valign=top><A HREF="history.html#SEC17">2.4 History Variables</A></TD></TR>
 <TR><TD></TD><TD valign=top><A HREF="history.html#IDX46"><CODE>history_quotes_inhibit_expansion</CODE></A></TD><TD valign=top><A HREF="history.html#SEC17">2.4 History Variables</A></TD></TR>
+<TR><TD></TD><TD valign=top><A HREF="history.html#IDX47"><CODE>history_quoting_state</CODE></A></TD><TD valign=top><A HREF="history.html#SEC17">2.4 History Variables</A></TD></TR>
 <TR><TD></TD><TD valign=top><A HREF="history.html#IDX24"><CODE>history_search</CODE></A></TD><TD valign=top><A HREF="history.html#SEC14">2.3.5 Searching the History List</A></TD></TR>
 <TR><TD></TD><TD valign=top><A HREF="history.html#IDX44"><CODE>history_search_delimiter_chars</CODE></A></TD><TD valign=top><A HREF="history.html#SEC17">2.4 History Variables</A></TD></TR>
 <TR><TD></TD><TD valign=top><A HREF="history.html#IDX26"><CODE>history_search_pos</CODE></A></TD><TD valign=top><A HREF="history.html#SEC14">2.3.5 Searching the History List</A></TD></TR>
@@ -2130,7 +2180,7 @@ to permit their use in free software.
 <TD VALIGN="MIDDLE" ALIGN="LEFT">[<A HREF="history.html#SEC_About"> ? </A>]</TD>
 </TR></TABLE>
 <H1>About this document</H1>
-This document was generated by <I>chet</I> on <I>September, 7  2016</I>
+This document was generated by <I>Chet Ramey</I> on <I>October, 30  2020</I>
 using <A HREF="http://www.mathematik.uni-kl.de/~obachman/Texi2html
 "><I>texi2html</I></A>
 <P></P>  
@@ -2292,7 +2342,7 @@ the following structure:
 <BR>  
 <FONT SIZE="-1">
 This document was generated
-by <I>chet</I> on <I>September, 7  2016</I>
+by <I>Chet Ramey</I> on <I>October, 30  2020</I>
 using <A HREF="http://www.mathematik.uni-kl.de/~obachman/Texi2html
 "><I>texi2html</I></A>
 

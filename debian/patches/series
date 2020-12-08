@@ -1,7 +1,4 @@
-# readline70-001.diff
-readline70-001.diff
-readline70-002.diff
-readline70-003.diff
+# readline80-001.diff
 rl-attribute.diff
 rl-header.diff
 rl-no-cross-check.diff

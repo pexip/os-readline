@@ -1,8 +1,6 @@
-Index: b/examples/rlfe/pty.c
-===================================================================
 --- a/examples/rlfe/pty.c
 +++ b/examples/rlfe/pty.c
-@@ -254,7 +254,7 @@
+@@ -254,7 +254,7 @@ char **ttyn;
  #if defined(HAVE_GETPT) && defined(linux)
    int getpt __P((void));
  #endif
