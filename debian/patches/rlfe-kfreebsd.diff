@@ -1,8 +1,6 @@
-Index: readline6-6.1/examples/rlfe/pty.c
-===================================================================
---- readline6-6.1.orig/examples/rlfe/pty.c	2010-05-30 18:30:54.000000000 +0000
-+++ readline6-6.1/examples/rlfe/pty.c	2010-05-30 18:30:58.000000000 +0000
-@@ -133,7 +133,7 @@
+--- a/examples/rlfe/pty.c
++++ b/examples/rlfe/pty.c
+@@ -133,7 +133,7 @@ int f;
  {
    if (f < 0)
      return;

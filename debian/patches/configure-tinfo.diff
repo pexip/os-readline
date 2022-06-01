@@ -1,8 +1,6 @@
-Index: b/aclocal.m4
-===================================================================
 --- a/aclocal.m4
 +++ b/aclocal.m4
-@@ -958,8 +958,8 @@ _bash_needmsg=
+@@ -995,8 +995,8 @@ _bash_needmsg=
  fi
  AC_CACHE_VAL(bash_cv_termcap_lib,
  [AC_CHECK_FUNC(tgetent, bash_cv_termcap_lib=libc,
@@ -12,12 +10,10 @@ Index: b/aclocal.m4
 +     [AC_CHECK_LIB(termcap, tgetent, bash_cv_termcap_lib=libtermcap,
          [AC_CHECK_LIB(curses, tgetent, bash_cv_termcap_lib=libcurses,
  	    [AC_CHECK_LIB(ncurses, tgetent, bash_cv_termcap_lib=libncurses,
- 	        bash_cv_termcap_lib=gnutermcap)])])])])])
-Index: b/configure
-===================================================================
+                 [AC_CHECK_LIB(ncursesw, tgetent, bash_cv_termcap_lib=libncursesw,
 --- a/configure
 +++ b/configure
-@@ -698,6 +698,7 @@ infodir
+@@ -700,6 +700,7 @@ infodir
  docdir
  oldincludedir
  includedir
@@ -25,7 +21,7 @@ Index: b/configure
  localstatedir
  sharedstatedir
  sysconfdir
-@@ -773,6 +774,7 @@ datadir='${datarootdir}'
+@@ -776,6 +777,7 @@ datadir='${datarootdir}'
  sysconfdir='${prefix}/etc'
  sharedstatedir='${prefix}/com'
  localstatedir='${prefix}/var'
@@ -33,7 +29,7 @@ Index: b/configure
  includedir='${prefix}/include'
  oldincludedir='/usr/include'
  docdir='${datarootdir}/doc/${PACKAGE_TARNAME}'
-@@ -1025,6 +1027,15 @@ do
+@@ -1028,6 +1030,15 @@ do
    | -silent | --silent | --silen | --sile | --sil)
      silent=yes ;;
  
@@ -49,7 +45,7 @@ Index: b/configure
    -sbindir | --sbindir | --sbindi | --sbind | --sbin | --sbi | --sb)
      ac_prev=sbindir ;;
    -sbindir=* | --sbindir=* | --sbindi=* | --sbind=* | --sbin=* \
-@@ -1162,7 +1173,7 @@ fi
+@@ -1165,7 +1176,7 @@ fi
  for ac_var in	exec_prefix prefix bindir sbindir libexecdir datarootdir \
  		datadir sysconfdir sharedstatedir localstatedir includedir \
  		oldincludedir docdir infodir htmldir dvidir pdfdir psdir \
@@ -58,7 +54,7 @@ Index: b/configure
  do
    eval ac_val=\$$ac_var
    # Remove trailing slashes.
-@@ -1315,6 +1326,7 @@ Fine tuning of the installation director
+@@ -1318,6 +1329,7 @@ Fine tuning of the installation director
    --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
    --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
    --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
@@ -66,7 +62,7 @@ Index: b/configure
    --libdir=DIR            object code libraries [EPREFIX/lib]
    --includedir=DIR        C header files [PREFIX/include]
    --oldincludedir=DIR     C header files for non-gcc [/usr/include]
-@@ -2951,7 +2963,7 @@ ac_clean_files="$ac_clean_files conftest
+@@ -3145,7 +3157,7 @@ ac_clean_files="$ac_clean_files conftest
  # the compiler is broken, or we cross compile.
  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether we are cross compiling" >&5
  $as_echo_n "checking whether we are cross compiling... " >&6; }
@@ -75,7 +71,7 @@ Index: b/configure
    { { ac_try="$ac_link"
  case "(($ac_try" in
    *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-@@ -4835,7 +4847,7 @@ else
+@@ -5029,7 +5041,7 @@ else
      We can't simply define LARGE_OFF_T to be 9223372036854775807,
      since some C++ compilers masquerading as C compilers
      incorrectly reject 9223372036854775807.  */
@@ -84,7 +80,7 @@ Index: b/configure
    int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
  		       && LARGE_OFF_T % 2147483647 == 1)
  		      ? 1 : -1];
-@@ -4881,7 +4893,7 @@ else
+@@ -5075,7 +5087,7 @@ else
      We can't simply define LARGE_OFF_T to be 9223372036854775807,
      since some C++ compilers masquerading as C compilers
      incorrectly reject 9223372036854775807.  */
@@ -93,7 +89,7 @@ Index: b/configure
    int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
  		       && LARGE_OFF_T % 2147483647 == 1)
  		      ? 1 : -1];
-@@ -4905,7 +4917,7 @@ rm -f core conftest.err conftest.$ac_obj
+@@ -5099,7 +5111,7 @@ rm -f core conftest.err conftest.$ac_obj
      We can't simply define LARGE_OFF_T to be 9223372036854775807,
      since some C++ compilers masquerading as C compilers
      incorrectly reject 9223372036854775807.  */
@@ -102,7 +98,7 @@ Index: b/configure
    int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
  		       && LARGE_OFF_T % 2147483647 == 1)
  		      ? 1 : -1];
-@@ -4950,7 +4962,7 @@ else
+@@ -5144,7 +5156,7 @@ else
      We can't simply define LARGE_OFF_T to be 9223372036854775807,
      since some C++ compilers masquerading as C compilers
      incorrectly reject 9223372036854775807.  */
@@ -111,7 +107,7 @@ Index: b/configure
    int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
  		       && LARGE_OFF_T % 2147483647 == 1)
  		      ? 1 : -1];
-@@ -4974,7 +4986,7 @@ rm -f core conftest.err conftest.$ac_obj
+@@ -5168,7 +5180,7 @@ rm -f core conftest.err conftest.$ac_obj
      We can't simply define LARGE_OFF_T to be 9223372036854775807,
      since some C++ compilers masquerading as C compilers
      incorrectly reject 9223372036854775807.  */
@@ -120,7 +116,7 @@ Index: b/configure
    int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
  		       && LARGE_OFF_T % 2147483647 == 1)
  		      ? 1 : -1];
-@@ -5905,13 +5917,13 @@ else
+@@ -6108,13 +6120,13 @@ else
  if test "x$ac_cv_func_tgetent" = xyes; then :
    bash_cv_termcap_lib=libc
  else
@@ -138,7 +134,7 @@ Index: b/configure
  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
  /* end confdefs.h.  */
  
-@@ -5931,26 +5943,26 @@ return tgetent ();
+@@ -6134,26 +6146,26 @@ return tgetent ();
  }
  _ACEOF
  if ac_fn_c_try_link "$LINENO"; then :
@@ -175,7 +171,7 @@ Index: b/configure
  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
  /* end confdefs.h.  */
  
-@@ -5970,18 +5982,18 @@ return tgetent ();
+@@ -6173,18 +6185,18 @@ return tgetent ();
  }
  _ACEOF
  if ac_fn_c_try_link "$LINENO"; then :

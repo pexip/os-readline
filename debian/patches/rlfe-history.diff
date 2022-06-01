@@ -4,11 +4,9 @@
 ## DP: Fix rlfe, always writing a history file.
 
 @DPATCH@
-Index: b/examples/rlfe/rlfe.c
-===================================================================
 --- a/examples/rlfe/rlfe.c
 +++ b/examples/rlfe/rlfe.c
-@@ -154,21 +154,27 @@
+@@ -154,21 +154,27 @@ struct termios orig_term;
  static pid_t child = -1;
  
  static void
@@ -40,7 +38,7 @@ Index: b/examples/rlfe/rlfe.c
  volatile int propagate_sigwinch = 0;
  
  /* sigwinch_handler
-@@ -710,8 +716,7 @@
+@@ -710,8 +716,7 @@ main(int argc, char** argv)
  	  if (count <= 0)
  	    {
  	      DPRINT0 ("(Connection closed by foreign host.)\n");

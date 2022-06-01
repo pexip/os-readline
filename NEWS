@@ -1,3 +1,89 @@
+This is a terse description of the new features added to readline-8.1 since
+the release of readline-8.0.
+
+New Features in Readline
+
+a. If a second consecutive completion attempt produces matches where the first
+   did not, treat it as a new completion attempt and insert a match as
+   appropriate.
+
+b. Bracketed paste mode works in more places: incremental search strings, vi
+   overstrike mode, character search, and reading numeric arguments.
+
+c. Readline automatically switches to horizontal scrolling if the terminal has
+   only one line.
+
+d. Unbinding all key sequences bound to a particular readline function now
+   descends into keymaps for multi-key sequences.
+
+e. rl-clear-display: new bindable command that clears the screen and, if
+   possible, the scrollback buffer (bound to emacs mode M-C-l by default).
+
+f. New active mark and face feature: when enabled, it will highlight the text
+   inserted by a bracketed paste (the `active region') and the text found by
+   incremental and non-incremental history searches. This is tied to bracketed
+   paste and can be disabled by turning off bracketed paste.
+
+g. Readline sets the mark in several additional commands.
+
+h. Bracketed paste mode is enabled by default. There is a configure-time
+   option (--enable-bracketed-paste-default) to set the default to on or off.
+
+i. Readline tries to take advantage of the more regular structure of UTF-8
+   characters to identify the beginning and end of characters when moving
+   through the line buffer.
+
+j. The bindable operate-and-get-next command (and its default bindings) are
+   now part of readline instead of a bash-specific addition.
+
+k. The signal cleanup code now blocks SIGINT while processing after a SIGINT.  
+
+-------------------------------------------------------------------------------
+This is a terse description of the new features added to readline-8.0 since
+the release of readline-7.0.
+
+New Features in Readline
+
+a. Non-incremental vi-mode search (`N', `n') can search for a shell pattern, as
+   Posix specifies (uses fnmatch(3) if available).
+
+b. There are new `next-screen-line' and `previous-screen-line' bindable
+   commands, which move the cursor to the same column in the next, or previous,
+   physical line, respectively.
+
+c. There are default key bindings for control-arrow-key key combinations.
+
+d. A negative argument (-N) to `quoted-insert' means to insert the next N
+   characters using quoted-insert.
+
+e. New public function: rl_check_signals(), which allows applications to
+   respond to signals that readline catches while waiting for input using
+   a custom read function.
+
+f. There is new support for conditionally testing the readline version in an
+   inputrc file, with a full set of arithmetic comparison operators available.
+
+g. There is a simple variable comparison facility available for use within an
+   inputrc file. Allowable operators are equality and inequality; string
+   variables may be compared to a value; boolean variables must be compared to
+   either `on' or `off'; variable names are separated from the operator by
+   whitespace.
+
+h. The history expansion library now understands command and process
+   substitution and extended globbing and allows them to appear anywhere in a
+   word.
+
+i. The history library has a new variable that allows applications to set the
+   initial quoting state, so quoting state can be inherited from a previous
+   line.
+
+j. Readline now allows application-defined keymap names; there is a new public
+   function, rl_set_keymap_name(), to do that.
+
+k. The "Insert" keypad key, if available, now puts readline into overwrite
+   mode.
+
+-------------------------------------------------------------------------------
 This is a terse description of the new features added to readline-7.0 since
 the release of readline-6.3.
 
@@ -45,6 +131,34 @@ k.  If readline reads a history file that begins with `#' (or the value of
 
 l.  Readline now throws an error if it parses a key binding without a terminating
     `:' or whitespace.
+
+m.  The default binding for ^W in vi mode now uses word boundaries specified
+    by Posix (vi-unix-word-rubout is bindable command name).
+
+n.  rl_clear_visible_line: new application-callable function; clears all
+    screen lines occupied by the current visible readline line.
+
+o.  rl_tty_set_echoing: application-callable function that controls whether
+    or not readline thinks it is echoing terminal output.
+
+p.  Handle >| and strings of digits preceding and following redirection
+    specifications as single tokens when tokenizing the line for history
+    expansion.
+
+q.  Fixed a bug with displaying completions when the prefix display length
+    is greater than the length of the completions to be displayed.
+
+r.  The :p history modifier now applies to the entire line, so any expansion
+    specifying :p causes the line to be printed instead of expanded.
+
+s.  New application-callable function: rl_pending_signal(): returns the signal
+    number of any signal readline has caught but not yet handled.
+    
+t.  New application-settable variable: rl_persistent_signal_handlers: if set
+    to a non-zero value, readline will enable the readline-6.2 signal handler
+    behavior in callback mode: handlers are installed when
+    rl_callback_handler_install is called and removed removed when a complete
+    line has been read.
 
 -------------------------------------------------------------------------------
 This is a terse description of the new features added to readline-6.3 since
@@ -104,6 +218,27 @@ m.  If the user-settable variable `history-size' is set to a value less than
 n.  New application-settable variable: rl_signal_event_hook; function that is
     called when readline is reading terminal input and read(2) is interrupted
     by a signal.  Currently not called for SIGHUP or SIGTERM.
+
+-------------------------------------------------------------------------------
+This is a terse description of the new features added to readline-6.2 since
+the release of readline-6.1.
+
+a.  The history library does not try to write the history filename in the
+    current directory if $HOME is unset.  This closes a potential security
+    problem if the application does not specify a history filename.
+
+b.  New bindable variable `completion-display-width' to set the number of
+    columns used when displaying completions.
+
+c.  New bindable variable `completion-case-map' to cause case-insensitive
+    completion to treat `-' and `_' as identical.
+
+d.  There are new bindable vi-mode command names to avoid readline's case-
+    insensitive matching not allowing them to be bound separately.
+
+e.  New bindable variable `menu-complete-display-prefix' causes the menu
+    completion code to display the common prefix of the possible completions
+    before cycling through the list, instead of after.
 
 -------------------------------------------------------------------------------
 This is a terse description of the new features added to readline-6.1 since

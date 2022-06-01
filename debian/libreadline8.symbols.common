@@ -1,6 +1,8 @@
  _hs_append_history_line@Base 7.0~rc1
+ _hs_history_patsearch@Base 8.0~
  _hs_replace_history_data@Base 7.0~beta
  _rl_abort_internal@Base 6.0
+ _rl_add_executing_keyseq@Base 8.1~alpha1
  _rl_add_macro_char@Base 6.0
  _rl_adjust_point@Base 6.0
  _rl_allow_pathname_alphabetic_chars@Base 6.0
@@ -12,10 +14,14 @@
  _rl_arg_overflow@Base 6.0
  _rl_argcxt@Base 6.0
  _rl_backspace@Base 6.0
+ _rl_backward_char_internal@Base 8.0~beta1
  _rl_bell_preference@Base 6.0
  _rl_bind_stty_chars@Base 6.0
  _rl_block_sigint@Base 6.0
  _rl_block_sigwinch@Base 6.1
+ _rl_bracketed_read_key@Base 8.1~alpha1
+ _rl_bracketed_read_mbstring@Base 8.1~alpha1
+ _rl_bracketed_text@Base 8
  _rl_callback_data@Base 6.0
  _rl_callback_data_alloc@Base 6.0
  _rl_callback_data_dispose@Base 6.0
@@ -30,6 +36,7 @@
  _rl_color_indicator@Base 6.3
  _rl_colored_completion_prefix@Base 7.0~beta
  _rl_colored_stats@Base 6.3
+ _rl_command_to_execute@Base 8.1~alpha1
  _rl_comment_begin@Base 6.0
  _rl_compare_chars@Base 6.0
  _rl_complete_mark_directories@Base 6.0
@@ -44,6 +51,7 @@
  _rl_convert_meta_chars_to_ascii@Base 6.0
  _rl_copy_undo_entry@Base 6.0
  _rl_copy_undo_list@Base 6.0
+ _rl_cr@Base 8.1~alpha1
  _rl_current_display_line@Base 6.0
  _rl_digit_p@Base 6.0
  _rl_digit_value@Base 6.0
@@ -59,12 +67,15 @@
  _rl_echoing_p@Base 6.0
  _rl_emacs_mode_str@Base 7.0~beta
  _rl_emacs_modestr_len@Base 7.0~beta
+ _rl_enable_active_region@Base 8.1~rc2
  _rl_enable_bracketed_paste@Base 7.0~beta
  _rl_enable_keypad@Base 6.0
  _rl_enable_meta@Base 6.0
  _rl_enable_meta_key@Base 6.0
  _rl_enable_paren_matching@Base 6.0
+ _rl_end_executing_keyseq@Base 8.1~alpha1
  _rl_eof_char@Base 6.0
+ _rl_eof_found@Base 8.0~beta1
  _rl_erase_at_end_of_line@Base 6.0
  _rl_erase_entire_line@Base 6.0
  _rl_errmsg@Base 6.0
@@ -74,6 +85,7 @@
  _rl_find_prev_mbchar@Base 6.0
  _rl_find_prev_mbchar_internal@Base 7.0~rc1
  _rl_fix_last_undo_of_type@Base 6.0
+ _rl_fix_mark@Base 8.1~alpha1
  _rl_fix_point@Base 6.0
  _rl_forward_char_internal@Base 6.2
  _rl_free_history_entry@Base 6.0
@@ -87,14 +99,17 @@
  _rl_horizontal_scroll_mode@Base 6.0
  _rl_in_stream@Base 6.0
  _rl_init_eightbit@Base 6.0
+ _rl_init_executing_keyseq@Base 8.1~alpha1
  _rl_init_line_state@Base 6.0
+ _rl_init_locale@Base 8.0~
  _rl_init_terminal_io@Base 6.0
  _rl_input_available@Base 6.0
  _rl_input_queued@Base 6.0
  _rl_insert_char@Base 6.0
  _rl_insert_typein@Base 6.0
  _rl_internal_char_cleanup@Base 6.0
- _rl_interrupt_immediately@Base 6.0
+ _rl_internal_startup_hook@Base 8.1~alpha1
+#MISSING: 8.1~alpha1# _rl_interrupt_immediately@Base 6.0
  _rl_intr_char@Base 6.0
  _rl_is_mbchar_matched@Base 6.0
  _rl_iscxt@Base 6.0
@@ -102,6 +117,7 @@
  _rl_isearch_cleanup@Base 7.0~beta
  _rl_isearch_dispatch@Base 6.0
  _rl_isearch_terminators@Base 6.0
+ _rl_keep_mark_active@Base 8.1~alpha1
  _rl_keymap@Base 6.0
  _rl_keyseq_chain_dispose@Base 6.0
  _rl_keyseq_cxt_alloc@Base 6.0
@@ -118,14 +134,17 @@
  _rl_match_hidden_files@Base 6.0
  _rl_menu_complete_prefix_first@Base 6.2
  _rl_meta_flag@Base 6.0
- _rl_move_cursor_relative@Base 6.0
+#MISSING: 8.1~alpha1# _rl_move_cursor_relative@Base 6.0
  _rl_move_vert@Base 6.0
+ _rl_nchars_available@Base 8.1~alpha1
  _rl_next_macro_key@Base 6.0
  _rl_nscxt@Base 6.0
  _rl_nsearch_callback@Base 6.0
  _rl_nsearch_cleanup@Base 7.0~beta
  _rl_null_function@Base 6.1
+ _rl_optimize_redisplay@Base 8.1~alpha1
  _rl_optimize_typeahead@Base 7.0~beta
+ _rl_orig_sigset@Base 8.0~
  _rl_out_stream@Base 6.0
  _rl_output_character_function@Base 6.0
  _rl_output_meta_chars@Base 6.0
@@ -135,6 +154,8 @@
  _rl_page_completions@Base 6.0
  _rl_parse_colors@Base 6.3
  _rl_parsing_conditionalized_out@Base 6.0
+ _rl_peek_macro_key@Base 8.0~
+ _rl_pending_command@Base 8.1~alpha1
  _rl_pop_executing_macro@Base 6.0
  _rl_possible_control_prefixes@Base 6.0
  _rl_possible_meta_prefixes@Base 6.0
@@ -149,9 +170,11 @@
  _rl_put_indicator@Base 6.3
  _rl_qsort_string_compare@Base 6.0
  _rl_quit_char@Base 6.0
+ _rl_read_bracketed_paste_prefix@Base 8.1~alpha1
  _rl_read_mbchar@Base 6.0
  _rl_read_mbstring@Base 6.0
  _rl_redisplay_after_sigwinch@Base 6.0
+ _rl_refresh_line@Base 8.1~alpha1
  _rl_release_sigint@Base 6.0
  _rl_release_sigwinch@Base 6.1
  _rl_replace_text@Base 6.0
@@ -161,6 +184,7 @@
  _rl_restore_tty_signals@Base 6.0
  _rl_revert_all_at_newline@Base 6.0
  _rl_revert_all_lines@Base 6.0
+ _rl_revert_previous_lines@Base 8.1~alpha1
  _rl_rubout_char@Base 6.0
  _rl_saved_line_for_history@Base 6.0
  _rl_savestring@Base 6.0
@@ -182,6 +206,8 @@
  _rl_signal_handler@Base 6.0
  _rl_sigwinch_resize_terminal@Base 6.3
  _rl_skip_completed_text@Base 6.1
+ _rl_standout_off@Base 8.1~alpha1
+ _rl_standout_on@Base 8.1~alpha1
  _rl_start_using_history@Base 6.0
  _rl_strindex@Base 6.0
  _rl_strip_prompt@Base 6.0
@@ -193,9 +219,11 @@
  _rl_term_backspace@Base 6.0
  _rl_term_clreol@Base 6.0
  _rl_term_clrpag@Base 6.0
+ _rl_term_clrscroll@Base 8.0~
  _rl_term_cr@Base 6.0
  _rl_term_dc@Base 6.0
  _rl_term_ei@Base 6.0
+ _rl_term_executing_keyseq@Base 8.1~alpha1
  _rl_term_forward_char@Base 6.0
  _rl_term_goto@Base 6.0
  _rl_term_ic@Base 6.0
@@ -274,6 +302,7 @@
  history_no_expand_chars@Base 6.0
  history_offset@Base 6.0
  history_quotes_inhibit_expansion@Base 6.0
+ history_quoting_state@Base 8.0~beta1
  history_search@Base 6.0
  history_search_delimiter_chars@Base 6.0
  history_search_pos@Base 6.0
@@ -299,8 +328,10 @@
  readline_internal_setup@Base 6.0
  readline_internal_teardown@Base 6.0
  remove_history@Base 6.0
+ remove_history_range@Base 8.0~
  replace_history_entry@Base 6.0
  rl_abort@Base 6.0
+ rl_activate_mark@Base 8.1~alpha1
  rl_add_defun@Base 6.0
  rl_add_funmap_entry@Base 6.0
  rl_add_undo@Base 6.0
@@ -347,7 +378,9 @@
  rl_char_is_quoted_p@Base 6.0
  rl_char_search@Base 6.0
  rl_character_len@Base 6.0
+ rl_check_signals@Base 8.0~
  rl_cleanup_after_signal@Base 6.0
+ rl_clear_display@Base 8.1~alpha1
  rl_clear_history@Base 6.3
  rl_clear_message@Base 6.0
  rl_clear_pending_input@Base 6.0
@@ -379,6 +412,7 @@
  rl_copy_region_to_kill@Base 6.0
  rl_copy_text@Base 6.0
  rl_crlf@Base 6.0
+ rl_deactivate_mark@Base 8.1~alpha1
  rl_delete@Base 6.0
  rl_delete_horizontal_space@Base 6.0
  rl_delete_or_show_completions@Base 6.0
@@ -405,6 +439,7 @@
  rl_echo_signal_char@Base 6.0
  rl_editing_mode@Base 6.0
  rl_emacs_editing_mode@Base 6.0
+ rl_empty_keymap@Base 8.0~
  rl_end@Base 6.0
  rl_end_kbd_macro@Base 6.0
  rl_end_of_history@Base 6.0
@@ -441,6 +476,7 @@
  rl_free_undo_list@Base 6.0
  rl_function_dumper@Base 6.0
  rl_function_of_keyseq@Base 6.0
+ rl_function_of_keyseq_len@Base 8.0~
  rl_funmap_names@Base 6.0
  rl_generic_bind@Base 6.0
  rl_get_keymap@Base 6.0
@@ -473,6 +509,7 @@
  rl_instream@Base 6.0
  rl_invoking_keyseqs@Base 6.0
  rl_invoking_keyseqs_in_map@Base 6.0
+ rl_keep_mark_active@Base 8.1~alpha1
  rl_key_sequence_length@Base 6.0
  rl_kill_full_line@Base 6.0
  rl_kill_line@Base 6.0
@@ -490,6 +527,7 @@
  rl_make_bare_keymap@Base 6.0
  rl_make_keymap@Base 6.0
  rl_mark@Base 6.0
+ rl_mark_active_p@Base 8.1~alpha1
  rl_maybe_replace_line@Base 6.0
  rl_maybe_save_line@Base 6.0
  rl_maybe_unsave_line@Base 6.0
@@ -499,6 +537,7 @@
  rl_modifying@Base 6.0
  rl_named_function@Base 6.0
  rl_newline@Base 6.0
+ rl_next_screen_line@Base 8.0~
  rl_noninc_forward_search@Base 6.0
  rl_noninc_forward_search_again@Base 6.0
  rl_noninc_reverse_search@Base 6.0
@@ -508,6 +547,7 @@
  rl_old_menu_complete@Base 6.0
  rl_on_new_line@Base 6.0
  rl_on_new_line_with_prompt@Base 6.0
+ rl_operate_and_get_next@Base 8.1~alpha1
  rl_outstream@Base 6.0
  rl_overwrite_mode@Base 6.0
  rl_parse_and_bind@Base 6.0
@@ -520,6 +560,7 @@
  rl_prefer_env_winsize@Base 6.0
  rl_prep_term_function@Base 6.0
  rl_prep_terminal@Base 6.0
+ rl_previous_screen_line@Base 8.0~
  rl_print_last_kbd_macro@Base 6.3
  rl_prompt@Base 6.0
  rl_push_macro_input@Base 6.0
@@ -554,6 +595,7 @@
  rl_set_keyboard_input_timeout@Base 6.0
  rl_set_keymap@Base 6.0
  rl_set_keymap_from_edit_mode@Base 6.0
+ rl_set_keymap_name@Base 8
  rl_set_mark@Base 6.0
  rl_set_paren_blink_timeout@Base 6.0
  rl_set_prompt@Base 6.0

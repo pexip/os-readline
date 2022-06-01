@@ -2,12 +2,10 @@ rl-attribute.dpatch by  <doko@debian.org>
 
 Do not redefine __attribute__, define macro __rl_attribute__
 
-Index: b/readline.h
-===================================================================
 --- a/readline.h
 +++ b/readline.h
-@@ -385,7 +385,7 @@ extern int rl_reset_line_state PARAMS((v
- extern int rl_crlf PARAMS((void));
+@@ -403,7 +403,7 @@ extern void rl_deactivate_mark PARAMS((v
+ extern int rl_mark_active_p PARAMS((void));
  
  #if defined (USE_VARARGS) && defined (PREFER_STDARG)
 -extern int rl_message (const char *, ...)  __attribute__((__format__ (printf, 1, 2)));
@@ -15,8 +13,6 @@ Index: b/readline.h
  #else
  extern int rl_message ();
  #endif
-Index: b/rlstdc.h
-===================================================================
 --- a/rlstdc.h
 +++ b/rlstdc.h
 @@ -36,10 +36,10 @@

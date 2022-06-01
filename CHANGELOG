@@ -1,4 +1,4 @@
-[Readline-specific changelog.  Descriptions of changes to the source are
+\[Readline-specific changelog.  Descriptions of changes to the source are
  found in the bash changelog.]
 
 				    6/9
@@ -1304,3 +1304,102 @@ configure.ac
 				   ----
 configure.ac,Makefile.in,examples/Makefile.in
 	- remove references to purify
+
+				   11/21
+				   -----
+configure.ac,config.h.in
+	- fnmatch: check for libc function, define HAVE_FNMATCH if found. Now
+	  used by vi-mode history search functions
+
+				   7/12
+				   ----
+Makefile.in,examples/Makefile.in
+	- add support for building with address sanitizer, using new target
+	  `asan'
+
+				 4/23/2018
+				 ---------
+configure.ac
+	- TERMCAP_PKG_CONFIG_LIB: new variable, defined from TERMCAP_LIB,
+	  defaults to termcap
+
+readline.pc.in
+	- change Requires.private to use TERMCAP_PKG_CONFIG_LIB instead of
+	  hardcoded `tinfo'. Report and fix from Thomas Petazzoni
+	  <thomas.petazzoni@bootlin.com>
+
+				    5/4
+				    ---
+Makefile.in
+	- new targets to install and uninstall the `readline.pc' pkgconfig
+	  file
+	- install-{static,shared}: add install-pc to the list of prereqs
+	- uninstall{,-shared}: add uninstall-pc to list of prereqs. Change
+	  from Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+
+configure.ac,Makefile.in
+	- add new configure option to optionally disable installing the
+	  source code examples. From Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+
+				   5/23
+				   ----
+Makefile.in
+	- install-pc: make sure we install readline.pc into an existing
+	  pkgconfig directory. Report from ilove zfs <ilovezfs@icloud.com>
+
+				   5/24
+				   ----
+Makefile.in
+	- installdirs: create $(pkgconfigdir) if it doesn't exist
+
+
+				 4/8/2019
+				 --------
+readline.pc.in
+	- change CFLAGS to include ${includedir} instead of ${includedir}/readline,
+	  to support the recommended `#include <readline/readline.h>'. Report
+	  and fix from Andrea Bolognani <abologna@redhat.com>
+
+				   5/13
+				   ----
+configure.ac
+	- hpux: add -DTGETENT_BROKEN to LOCAL_CFLAGS
+
+				   8/28
+				   ----
+configure.ac
+	- hpux: add -DTGETFLAG_BROKEN to LOCAL_CFLAGS
+
+				    9/6
+				    ---
+examples/autoconf/RL_LIB_READLINE_VERSION
+	- include <stdlib.h> in the AC_TRY_RUN block to accommodate compilers
+	  that treat functions without an existing prototype as fatal errors.
+	  Report and fix from Florian Weimer <fweimer@redhat.com>
+
+				   12/13
+				   -----
+support/shlib-install
+	- remove old code for FreeBSD and Dragonfly; they are ELF-only now and
+	  can use the same code as Linux. Fix from
+	  Baptiste Daroussin <bapt@FreeBSD.org>
+
+				 5/20/2020
+				 ---------
+configure.ac
+	- bumped version number up to 8.1
+
+				   6/15
+				   ----
+configure.ac
+	- add -Wno-parentheses -Wno-format-security to CFLAGS if gcc (or clang)
+	  is the compiler
+
+				   10/29
+				   -----
+configure.ac
+	- --enable-bracketed-paste-default: new invocation option, toggles the
+	  default value of enable-bracketed-paste (on by default)
+
+INSTALL
+	- document new --enable-bracketed-paste-default configure option

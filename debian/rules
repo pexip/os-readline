@@ -1,8 +1,8 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
-soversion = 7
-libversion = $(soversion).0
+soversion = 8
+libversion = $(soversion).1
 
 # architecture dependent variables
 DEB_HOST_ARCH		?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
@@ -129,11 +129,7 @@ endif
 
 	touch configure-stamp
 
-ifeq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
-build: build-stamp build-rlfe-stamp
-else
-build: build-stamp
-endif
+build: build-stamp $(if $(filter cross,$(DEB_BUILD_PROFILES)),,build-rlfe-stamp)
 build-arch: build
 build-indep: build
 
@@ -207,6 +203,7 @@ install-stamp:
 	dh_prep
 	rm -rf $(d)
 	mkdir -p $(d)/usr/bin
+	mkdir -p $(d)/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig
 	$(MAKE) -C $(builddir) install \
 	    CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS) -D_REENTRANT" \
 	    SHOBJ_LDFLAGS='-shared $(LDFLAGS)' \
@@ -244,7 +241,7 @@ install-stamp:
 
 	: # move $(p_rld)
 	dh_installdirs -p$(p_rld) \
-		usr/lib/$(DEB_HOST_MULTIARCH)/ \
+		usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig \
 		usr/share/doc \
 		usr/share/info
 	ln -s /lib/$(DEB_HOST_MULTIARCH)/libhistory.so.$(soversion) \
@@ -253,6 +250,8 @@ install-stamp:
 		$(d_rld)/usr/lib/$(DEB_HOST_MULTIARCH)/libreadline.so
 	mv $(d)/usr/lib/$(DEB_HOST_MULTIARCH)/lib{history,readline}.a \
 		$(d_rld)/usr/lib/$(DEB_HOST_MULTIARCH)/.
+	mv $(d)/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/readline.pc \
+		$(d_rld)/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/.
 	mv $(d)/usr/include $(d_rld)/usr/.
 
 	: # remove HAVE_CONFIG_H from installed headers
@@ -269,8 +268,8 @@ install-stamp:
 	    $(d_rld)/usr/include/readline/chardefs.h; \
 	fi
 
+ifeq (,$(filter cross,$(DEB_BUILD_PROFILES)))
 	: # install $(p_rlfe)
-ifeq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
 	dh_installdirs -p$(p_rlfe) \
 	    usr/bin usr/share/man/man1 \
 	    usr/share/doc/$(p_rlfe)
@@ -281,6 +280,7 @@ endif
 ifneq ($(build32),)
 	rm -rf $(d32)
 	mkdir -p $(d32)/usr/bin
+	mkdir -p $(d32)/usr/lib/pkgconfig
 	$(MAKE) -C $(builddir32) install \
 	    CC="$(CC32)" \
 	    CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS) -D_REENTRANT" \
@@ -314,6 +314,7 @@ endif
 ifneq ($(build64),)
 	rm -rf $(d64)
 	mkdir -p $(d64)/usr/bin
+	mkdir -p $(d64)/usr/lib/pkgconfig
 	$(MAKE) -C $(builddir64) install \
 	    CC="$(CC64)" \
 	    CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS) -D_REENTRANT" \
@@ -364,6 +365,8 @@ binary-indep: build install
 	  -e '/^VPATH =/s,=.*,= .:/usr/share/doc/$(p_rl)/examples,' \
 	  -e '/^top_srcdir =/s,=.*,= /usr/include/readline,' \
 	  -e '/^BUILD_DIR =/s,=.*,= /usr/src/readline6/build,' \
+	  -e 's/-ffile-prefix-map=[^ ]*[ ]*//g' \
+	  -e 's/-fdebug-prefix-map=[^ ]*[ ]*//g' \
 	  $(d_doc)/usr/share/doc/$(p_rl)/examples/Makefile
 	dh_link -p$(p_doc) \
 	  /usr/share/doc/$(p_rl)/examples /usr/share/doc/$(p_doc)/examples
@@ -392,7 +395,6 @@ binary-arch: build install
 		examples/Inputrc
 	ln -sf $(p_rl) $(d_rld)/usr/share/doc/$(p_rld)
 
-ifeq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
 	dh_installdocs -p$(p_rlfe) examples/rlfe/README
 	dh_installchangelogs -p$(p_rlfe) examples/rlfe/ChangeLog
 
@@ -401,10 +403,9 @@ ifeq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
 	dh_compress -p$(p_rl) -p$(p_rld) -p$(p_rlfe) \
 		-X.c -XMakefile
 	dh_makeshlibs -p$(p_rl)
-	cp -p debian/$(p_rl).shlibs debian/shlibs.local
+	cp -p debian/libreadline.shlibs debian/shlibs.local
 	dh_shlibdeps -p$(p_rl) -p$(p_rld) -p$(p_rlfe) \
 		 -L $(p_rl) -l $(d_rl)/lib
-endif
 
 ifneq ($(build32),)
 	-ls -l $(d_rld)/usr/share/doc/$(p_rl)
@@ -436,10 +437,10 @@ ifneq ($(build64),)
 	-ls -l $(d_rld)/usr/share/doc/$(p_rl)
 endif
 
-	dh_installdeb -s
-	dh_gencontrol -s $(gencontrol_flags)
-	dh_md5sums -s
-	dh_builddeb -s
+	dh_installdeb -a
+	dh_gencontrol -a $(gencontrol_flags)
+	dh_md5sums -a
+	dh_builddeb -a
 
 binary:		binary-indep binary-arch
 

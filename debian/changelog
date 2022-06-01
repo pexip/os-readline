@@ -1,3 +1,97 @@
+readline (8.1-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Bump standards version.
+
+ -- Matthias Klose <doko@debian.org>  Tue, 08 Dec 2020 07:58:34 +0100
+
+readline (8.1~rc3-1) unstable; urgency=medium
+
+  * New upstream release candidate 3.
+
+ -- Matthias Klose <doko@debian.org>  Sun, 22 Nov 2020 16:20:00 +0100
+
+readline (8.1~rc2-2) unstable; urgency=medium
+
+  * Upload to unstable.
+
+ -- Matthias Klose <doko@debian.org>  Tue, 10 Nov 2020 08:10:55 +0100
+
+readline (8.1~rc2-1) experimental; urgency=medium
+
+  * New upstream release candidate 2.
+
+ -- Matthias Klose <doko@debian.org>  Wed, 04 Nov 2020 17:48:26 +0100
+
+readline (8.1~rc1-1) experimental; urgency=medium
+
+  * New upstream release candidate 1.
+
+ -- Matthias Klose <doko@ubuntu.com>  Fri, 09 Oct 2020 17:35:51 +0200
+
+readline (8.1~beta1-1) experimental; urgency=medium
+
+  * New upstream snapshot 8.1 alpha 1.
+
+ -- Matthias Klose <doko@debian.org>  Thu, 17 Sep 2020 13:49:39 +0200
+
+readline (8.1~alpha1-1) experimental; urgency=medium
+
+  * New upstream snapshot 8.1 alpha 1.
+  * Bump debhelper version.
+
+ -- Matthias Klose <doko@debian.org>  Tue, 04 Aug 2020 19:34:23 +0200
+
+readline (8.0-4) unstable; urgency=medium
+
+  * Apply upstream patches 002 - 004.
+  * Bump the standards version.
+
+ -- Matthias Klose <doko@debian.org>  Tue, 25 Feb 2020 12:48:50 +0100
+
+readline (8.0-3) unstable; urgency=medium
+
+  * Apply upstream patch 001.
+  * Make the cross built libreadline8 work again (Helmut Grohne).
+    Closes: #932023.
+  * Make the build reproducible (Chris Lamb). Closes: #935363.
+  * Install the pkg-config file. Closes: #901650.
+  * Bump the standards version.
+
+ -- Matthias Klose <doko@debian.org>  Thu, 22 Aug 2019 12:57:05 +0200
+
+readline (8.0-2) unstable; urgency=medium
+
+  * Upload to unstable.
+
+ -- Matthias Klose <doko@debian.org>  Mon, 08 Jul 2019 00:14:36 +0200
+
+readline (8.0-1) experimental; urgency=medium
+
+  * New upstream release.
+
+ -- Matthias Klose <doko@debian.org>  Mon, 14 Jan 2019 16:23:44 +0100
+
+readline (8.0~beta2-1) experimental; urgency=medium
+
+  * New upstream beta release.
+  * Update symbols files.
+
+ -- Matthias Klose <doko@debian.org>  Thu, 06 Dec 2018 19:37:20 +0100
+
+readline (8.0~beta1-1) experimental; urgency=medium
+
+  * New upstream beta release.
+  * Update symbols files.
+
+ -- Matthias Klose <doko@debian.org>  Mon, 22 Oct 2018 16:10:54 +0200
+
+readline (8.0~alpha1-1) experimental; urgency=medium
+
+  * New upstream alpha release.
+
+ -- Matthias Klose <doko@debian.org>  Mon, 04 Jun 2018 23:27:39 +0200
+
 readline (7.0-5pexip2) pexip; urgency=medium
 
   * Rebuild in buster environment
