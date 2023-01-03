@@ -1,3 +1,85 @@
+readline (8.2-1.3) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Convert d/copyright to machine-readable format, adding missing info.
+    (Closes: #1023686)
+
+ -- Bastian Germann <bage@debian.org>  Tue, 03 Jan 2023 21:49:45 +0100
+
+readline (8.2-1.2) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Support the nobiarch build profile. (Closes: #737955)
+
+ -- Helmut Grohne <helmut@subdivi.de>  Fri, 11 Nov 2022 07:37:10 +0100
+
+readline (8.2-1.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Add upstream fix for crash with invalid locale. (Closes: #1021062)
+
+ -- Adrian Bunk <bunk@debian.org>  Sat, 15 Oct 2022 14:47:17 +0300
+
+readline (8.2-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Update symbols files.
+
+ -- Matthias Klose <doko@debian.org>  Wed, 28 Sep 2022 16:24:54 +0200
+
+readline (8.2~rc2-2) unstable; urgency=medium
+
+  * /etc/inputrc: Add options to make autocompletion case insensitive
+    and display suggestions, commented out by default. See #990353.
+
+ -- Matthias Klose <doko@debian.org>  Thu, 25 Aug 2022 16:40:30 +0200
+
+readline (8.2~rc2-1) experimental; urgency=medium
+
+  * New upstream snapshot 8.2 rc2.
+  * Bump standards version.
+
+ -- Matthias Klose <doko@debian.org>  Wed, 24 Aug 2022 10:43:09 +0200
+
+readline (8.2~rc1-1) experimental; urgency=medium
+
+  * New upstream snapshot 8.2 rc1.
+
+ -- Matthias Klose <doko@debian.org>  Sun, 17 Jul 2022 14:28:51 +0200
+
+readline (8.2~beta-2) experimental; urgency=medium
+
+  * New upstream snapshot 8.2 beta 1.
+  * Update symbols files.
+
+ -- Matthias Klose <doko@debian.org>  Wed, 01 Jun 2022 09:42:22 +0200
+
+readline (8.1.2-1.2) unstable; urgency=medium
+
+  * Upload to unstable.
+
+ -- Samuel Thibault <sthibault@debian.org>  Wed, 13 Apr 2022 20:23:20 +0200
+
+readline (8.1.2-1.1) experimental; urgency=medium
+
+  * Non-Maintainer Upload.
+  * Add libreadline8-udeb and readline-common-udeb packages.
+    Closes: #1002508.
+
+ -- Samuel Thibault <sthibault@debian.org>  Sun, 03 Apr 2022 16:43:54 +0200
+
+readline (8.1.2-1) unstable; urgency=medium
+
+  * New upstream patch release.
+
+ -- Matthias Klose <doko@debian.org>  Thu, 06 Jan 2022 17:26:54 +0100
+
+readline (8.1-2) unstable; urgency=medium
+
+  * Apply upstream patch 001.
+
+ -- Matthias Klose <doko@debian.org>  Mon, 10 May 2021 09:01:33 +0200
+
 readline (8.1-1) unstable; urgency=medium
 
   * New upstream release.
