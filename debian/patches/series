@@ -1,4 +1,16 @@
-#readline81-001.diff
+readline82-001.diff
+readline82-002.diff
+readline82-003.diff
+readline82-004.diff
+readline82-005.diff
+readline82-006.diff
+readline82-007.diff
+readline82-008.diff
+readline82-009.diff
+readline82-010.diff
+readline82-011.diff
+readline82-012.diff
+readline82-013.diff
 rl-attribute.diff
 rl-header.diff
 rl-no-cross-check.diff
@@ -10,4 +22,5 @@ rlfe-tinfo.diff
 fix-wformat-security.diff
 configure-tinfo.diff
 rlfe-signal-rvt.diff
-0001-Readline-8.2-patch-1-fix-crash-when-readline-is-star.patch
+fix-rl_do_undo-crash.diff
+rlfe-fix-ftbfs.diff

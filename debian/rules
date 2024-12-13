@@ -24,6 +24,7 @@ endif
 ifneq (,$(findstring /$(DEB_HOST_ARCH)/,/i386/powerpc/sparc/s390/))
   build64 = yes
   CC64 = $(CROSS) -m64
+  lib64dir = usr/lib64
   gencontrol_flags = -- \
 	'-Vdevxx:Depends=libc6-dev-$(ARCH64)'
   ifeq ($(DEB_HOST_ARCH),i386)
@@ -47,8 +48,7 @@ endif
 ifneq (,$(findstring /$(DEB_HOST_ARCH)/,/amd64/ppc64/))
   build32 = yes
   CC32 = $(CROSS) -m32
-  lib32dir = lib32
-  lib32devdir = usr/lib32
+  lib32dir = usr/lib32
   gencontrol_flags = -- \
 	'-Vdevxx:Depends=libc6-dev-$(ARCH32)'
   ifeq ($(DEB_HOST_ARCH),amd64)
@@ -77,7 +77,7 @@ CC	= $(CROSS)
 
 SHELL	= bash
 
-p_rl	= libreadline$(soversion)
+p_rl	= libreadline$(soversion)t64
 p_rlu	= libreadline$(soversion)-udeb
 p_rl32	= lib32readline$(soversion)
 p_rl64	= lib64readline$(soversion)
@@ -155,6 +155,9 @@ endif
 
 	touch configure-stamp
 
+debian/%:debian/%.in
+	sed 's/#DEB_HOST_MULTIARCH#/$(DEB_HOST_MULTIARCH)/g' $< > $@
+
 build: build-stamp $(if $(filter cross,$(DEB_BUILD_PROFILES)),,build-rlfe-stamp)
 build-arch: build
 build-indep: build
@@ -211,9 +214,10 @@ build-rlfe-stamp: configure-stamp
 	ln -sf ../../.. $(builddir)/examples/rlfe/readline
 	chmod +x $(builddir)/examples/rlfe/configure
 	cd $(builddir)/examples/rlfe \
-		&& ./configure --prefix=/usr --host=$(DEB_HOST_GNU_TYPE)
+		&& ./configure --prefix=/usr --host=$(DEB_HOST_GNU_TYPE) \
+	    CFLAGS="$(CFLAGS) -Wno-implicit-int -Wno-implicit-function-declaration -Wno-builtin-declaration-mismatch -D_GNU_SOURCE" CPPFLAGS="$(CPPFLAGS)"
 	$(MAKE) -C $(builddir)/examples/rlfe \
-	    CFLAGS="$(CFLAGS) -D_GNU_SOURCE" CPPFLAGS="$(CPPFLAGS)" \
+	    CFLAGS="$(CFLAGS) -Wno-implicit-int -Wno-implicit-function-declaration -Wno-builtin-declaration-mismatch -D_GNU_SOURCE" CPPFLAGS="$(CPPFLAGS)" \
 	    LDFLAGS="$(LDFLAGS) -g -L$(builddir)/shlib" \
 	    LIBS="-lreadline -ltinfo -lutil" rlfe
 	touch build-rlfe-stamp
@@ -229,6 +233,7 @@ clean:
 	rm -f debian/shlibs.local
 	find . -type d | xargs chmod g-s
 	rm -f support/config.guess support/config.sub
+	rm -f debian/libreadline8t64.preinst debian/libreadline8t64.postrm
 	dh_clean
 
 install: install-stamp
@@ -250,15 +255,9 @@ install-stamp:
 
 	: # move $(p_rl)
 	dh_installdirs -p$(p_rl) \
-		etc \
-		lib/$(DEB_HOST_MULTIARCH) \
+		usr/lib/$(DEB_HOST_MULTIARCH) \
 		usr/share/doc
-	cp -a $(d)/usr/lib/$(DEB_HOST_MULTIARCH)/lib{history,readline}.so.* $(d_rl)/lib/$(DEB_HOST_MULTIARCH)/
-#	cp -a $(d)/usr/lib/lib{history,readline}.so.$(libversion) $(d_rl)/lib/
-#	ln -s libhistory.so.$(libversion) \
-#		$(d_rl)/lib/libhistory.so.$(soversion)
-#	ln -s libreadline.so.$(libversion) \
-#		$(d_rl)/lib/libreadline.so.$(soversion)
+	cp -a $(d)/usr/lib/$(DEB_HOST_MULTIARCH)/lib{history,readline}.so.* $(d_rl)/usr/lib/$(DEB_HOST_MULTIARCH)/
 
 	: # move $(p_comm)
 	dh_installdirs -p$(p_comm) \
@@ -279,9 +278,9 @@ install-stamp:
 		usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig \
 		usr/share/doc \
 		usr/share/info
-	ln -s /lib/$(DEB_HOST_MULTIARCH)/libhistory.so.$(soversion) \
+	ln -s libhistory.so.$(soversion) \
 		$(d_rld)/usr/lib/$(DEB_HOST_MULTIARCH)/libhistory.so
-	ln -s /lib/$(DEB_HOST_MULTIARCH)/libreadline.so.$(soversion) \
+	ln -s libreadline.so.$(soversion) \
 		$(d_rld)/usr/lib/$(DEB_HOST_MULTIARCH)/libreadline.so
 	mv $(d)/usr/lib/$(DEB_HOST_MULTIARCH)/lib{history,readline}.a \
 		$(d_rld)/usr/lib/$(DEB_HOST_MULTIARCH)/.
@@ -327,13 +326,13 @@ ifneq ($(buildudeb),)
 	    infodir=/usr/share/info
 
 	dh_installdirs -p$(p_rlu) \
-	    lib/$(DEB_HOST_MULTIARCH)
+	    usr/lib/$(DEB_HOST_MULTIARCH)
 	cp -p $(du)/usr/lib/$(DEB_HOST_MULTIARCH)/lib{history,readline}.so.$(libversion) \
-		$(d_rlu)/lib/$(DEB_HOST_MULTIARCH)/
+		$(d_rlu)/usr/lib/$(DEB_HOST_MULTIARCH)/
 	ln -s libhistory.so.$(libversion) \
-		$(d_rlu)/lib/$(DEB_HOST_MULTIARCH)/libhistory.so.$(soversion)
+		$(d_rlu)/usr/lib/$(DEB_HOST_MULTIARCH)/libhistory.so.$(soversion)
 	ln -s libreadline.so.$(libversion) \
-		$(d_rlu)/lib/$(DEB_HOST_MULTIARCH)/libreadline.so.$(soversion)
+		$(d_rlu)/usr/lib/$(DEB_HOST_MULTIARCH)/libreadline.so.$(soversion)
 
 	dh_installdirs -p$(p_commu) \
 		usr/share/readline
@@ -365,13 +364,13 @@ ifneq ($(build32),)
 		$(d_rl32)/$(lib32dir)/libreadline.so.$(soversion)
 
 	dh_installdirs -p$(p_rld32) \
-	    $(lib32devdir) \
+	    $(lib32dir) \
 	    usr/share/doc
-	ln -s /$(lib32dir)/libhistory.so.$(soversion) \
-		$(d_rld32)/$(lib32devdir)/libhistory.so
-	ln -s /$(lib32dir)/libreadline.so.$(soversion) \
-		$(d_rld32)/$(lib32devdir)/libreadline.so
-	mv $(d32)/usr/lib/lib{history,readline}.a $(d_rld32)/$(lib32devdir)/.
+	ln -s libhistory.so.$(soversion) \
+		$(d_rld32)/$(lib32dir)/libhistory.so
+	ln -s libreadline.so.$(soversion) \
+		$(d_rld32)/$(lib32dir)/libreadline.so
+	mv $(d32)/usr/lib/lib{history,readline}.a $(d_rld32)/$(lib32dir)/.
 endif
 
 ifneq ($(build64),)
@@ -389,25 +388,25 @@ ifneq ($(build64),)
 	    infodir=/usr/share/info
 
 	dh_installdirs -p$(p_rl64) \
-	    lib64 \
+	    $(lib64dir) \
 	    usr/share/doc
 	dh_installdirs -p$(p_rld64) \
 	    usr/share/doc
 	cp -p $(d64)/usr/lib/lib{history,readline}.so.$(libversion) \
-		$(d_rl64)/lib64/
+		$(d_rl64)/$(lib64dir)/
 	ln -s libhistory.so.$(libversion) \
-		$(d_rl64)/lib64/libhistory.so.$(soversion)
+		$(d_rl64)/$(lib64dir)/libhistory.so.$(soversion)
 	ln -s libreadline.so.$(libversion) \
-		$(d_rl64)/lib64/libreadline.so.$(soversion)
+		$(d_rl64)/$(lib64dir)/libreadline.so.$(soversion)
 
 	dh_installdirs -p$(p_rld64) \
-	    usr/lib64 \
+	    $(lib64dir) \
 	    usr/share/doc
-	ln -s /lib64/libhistory.so.$(soversion) \
-		$(d_rld64)/usr/lib64/libhistory.so
-	ln -s /lib64/libreadline.so.$(soversion) \
-		$(d_rld64)/usr/lib64/libreadline.so
-	mv $(d64)/usr/lib/lib{history,readline}.a $(d_rld64)/usr/lib64/.
+	ln -s libhistory.so.$(soversion) \
+		$(d_rld64)/$(lib64dir)/libhistory.so
+	ln -s libreadline.so.$(soversion) \
+		$(d_rld64)/$(lib64dir)/libreadline.so
+	mv $(d64)/usr/lib/lib{history,readline}.a $(d_rld64)/$(lib64dir)/.
 endif
 
 	: # $(p_doc)
@@ -448,7 +447,7 @@ binary-indep: build install
 	dh_md5sums -i
 	dh_builddeb -i
 
-binary-arch: build install
+binary-arch: build install debian/libreadline8t64.preinst debian/libreadline8t64.postrm
 	dh_testdir
 	dh_testroot
 	dh_installdocs -p$(p_rl) \
@@ -468,7 +467,7 @@ binary-arch: build install
 	dh_makeshlibs -p$(p_rl) --add-udeb=$(p_rlu)
 	cp -p debian/libreadline.shlibs debian/shlibs.local
 	dh_shlibdeps -p$(p_rl) -p$(p_rld) -p$(p_rlfe) \
-		 -L $(p_rl) -l $(d_rl)/lib
+		 -L $(p_rl) -l $(d_rl)/usr/lib
 
 ifneq ($(buildudeb),)
 	dh_compress -p$(p_rlu)
@@ -476,7 +475,7 @@ ifneq ($(buildudeb),)
 	dh_strip -p$(p_rlu)
 	dh_makeshlibs -p$(p_rlu)
 	-dh_shlibdeps -p$(p_rlu) \
-		 -L $(p_rlu) -l $(d_rlu)/lib
+		 -L $(p_rlu) -l $(d_rlu)/usr/lib
 endif
 
 ifneq ($(build32),)
@@ -490,7 +489,7 @@ ifneq ($(build32),)
 	dh_strip -p$(p_rl32) -p$(p_rld32)
 	dh_makeshlibs -p$(p_rl32)
 	-dh_shlibdeps -p$(p_rl32) -p$(p_rld32) \
-		 -L $(p_rl32) -l $(d_rl32)/lib
+		 -L $(p_rl32) -l $(d_rl32)/usr/lib
 	-ls -l $(d_rld)/usr/share/doc/$(p_rl)
 endif
 
@@ -505,7 +504,7 @@ ifneq ($(build64),)
 	dh_strip -p$(p_rl64) -p$(p_rld64)
 	dh_makeshlibs -p$(p_rl64)
 	-dh_shlibdeps -p$(p_rl64) -p$(p_rld64) \
-		 -L $(p_rl64) -l $(d_rl64)/lib
+		 -L $(p_rl64) -l $(d_rl64)/usr/lib
 	-ls -l $(d_rld)/usr/share/doc/$(p_rl)
 endif
 

@@ -2,14 +2,18 @@ Source: readline
 Section: libs
 Priority: optional
 Maintainer: Matthias Klose <doko@debian.org>
-Standards-Version: 4.6.1
-Build-Depends: debhelper (>= 11),
+Standards-Version: 4.7.0
+Build-Depends: dpkg-dev (>= 1.22.5), debhelper (>= 13),
   libncurses-dev,
   lib32ncurses-dev [amd64 ppc64] <!nobiarch>, lib64ncurses-dev [i386 powerpc sparc s390] <!nobiarch>,
   mawk | awk, texinfo,
   gcc-multilib [amd64 i386 kfreebsd-amd64 powerpc ppc64 s390 sparc] <!nobiarch>
+Homepage: https://tiswww.case.edu/php/chet/readline/rltop.html
 
-Package: libreadline8
+Package: libreadline8t64
+Provides: ${t64:Provides}
+Replaces: libreadline8
+Breaks: libreadline8 (<< ${source:Version})
 Architecture: any
 Depends: readline-common, ${shlibs:Depends}, ${misc:Depends}
 Pre-Depends: ${misc:Pre-Depends}
@@ -55,7 +59,7 @@ Package: readline-common
 Architecture: all
 Multi-Arch: foreign
 Section: utils
-Depends: dpkg (>= 1.15.4) | install-info, ${misc:Depends}
+Depends: ${misc:Depends}
 Conflicts: libreadline5 (<< 5.0-11), libreadline-common
 Replaces: libreadline4 (<< 4.3-16), libreadline5 (<< 5.0-11), libreadline-common
 Suggests: readline-doc
@@ -84,7 +88,7 @@ Description: GNU readline and history libraries, common files (d-i)
 Package: libreadline-dev
 Architecture: any
 Section: libdevel
-Depends: libreadline8 (= ${binary:Version}), libncurses-dev, dpkg (>= 1.15.4) | install-info, ${misc:Depends}
+Depends: libreadline8t64 (= ${binary:Version}), libncurses-dev, ${misc:Depends}
 Multi-Arch: same
 Conflicts: libreadline5-dev, libreadline6-dev, libreadline-gplv2-dev
 Suggests: readline-doc
@@ -160,7 +164,7 @@ Package: readline-doc
 Architecture: all
 Multi-Arch: foreign
 Section: doc
-Depends: dpkg (>= 1.15.4) | install-info, ${misc:Depends}
+Depends: ${misc:Depends}
 Replaces: libreadline6-dev (<< 6.3-8)
 Description: GNU readline and history libraries, documentation and examples
  The GNU readline library aids in the consistency of user interface
