@@ -1,0 +1,126 @@
+--- a/examples/rlfe/configure.in
++++ b/examples/rlfe/configure.in
+@@ -30,7 +30,7 @@ AC_PROG_CPP
+ AC_PROG_GCC_TRADITIONAL
+ AC_ISC_POSIX
+ 
+-AC_TRY_RUN(main(){exit(0);},,[
++AC_TRY_RUN(int main(){return 0;},,[
+ if test $CC != cc ; then
+ AC_NOTE(Your $CC failed - restarting with CC=cc)
+ AC_NOTE()
+@@ -40,7 +40,7 @@ exec $0 $configure_args
+ fi
+ ])
+ 
+-AC_TRY_RUN(main(){exit(0);},,
++AC_TRY_RUN(int main(){return 0;},,
+ exec 5>&2
+ eval $ac_link
+ AC_NOTE(CC=$CC; CFLAGS=$CFLAGS; LIBS=$LIBS;)
+@@ -48,7 +48,7 @@ AC_NOTE($ac_compile)
+ AC_MSG_ERROR(Can't run the compiler - sorry))
+ 
+ AC_TRY_RUN([
+-main()
++int main()
+ {
+   int __something_strange_();
+   __something_strange_(0);
+@@ -84,10 +84,10 @@ dnl    ****  select()  ****
+ dnl
+ 
+ AC_CHECKING(select)
+-AC_TRY_LINK(,[select(0, 0, 0, 0, 0);],, 
++AC_TRY_LINK([#include <sys/select.h>],[select(0, 0, 0, 0, 0);],,
+ LIBS="$LIBS -lnet -lnsl"
+ AC_CHECKING(select with $LIBS)
+-AC_TRY_LINK(,[select(0, 0, 0, 0, 0);],, 
++AC_TRY_LINK([#include <sys/select.h>],[select(0, 0, 0, 0, 0);],,
+ AC_MSG_ERROR(!!! no select - no screen))
+ )
+ dnl
+@@ -99,6 +99,7 @@ AC_TRY_RUN([
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
++#include <stdlib.h>
+ 
+ char *nam = "/tmp/conftest$$";
+ 
+@@ -112,7 +113,7 @@ char *nam = "/tmp/conftest$$";
+ #endif
+ 
+ 
+-main()
++int main()
+ {
+ #ifdef FD_SET
+   fd_set f;
+@@ -146,7 +147,7 @@ main()
+ #include <sys/socket.h>
+ #include <sys/un.h>
+ 
+-main()
++int main()
+ {
+   int s1, s2, l;
+   struct sockaddr_un a;
+@@ -216,15 +217,16 @@ AC_CHECKING(libtinfo)
+ AC_TRY_LINK(,tgetent((char *)0, (char *)0);,,
+ LIBS="-ltermlib $olibs"
+ AC_CHECKING(libtermlib)
+-AC_TRY_LINK(,tgetent((char *)0, (char *)0);,,
++AC_TRY_LINK([#include <term.h>],tgetent((char *)0, (char *)0);,,
+ LIBS="-lncurses $olibs"
+ AC_CHECKING(libncurses)
+-AC_TRY_LINK(,tgetent((char *)0, (char *)0);,,
++AC_TRY_LINK([#include <term.h>],tgetent((char *)0, (char *)0);,,
+ AC_MSG_ERROR(!!! no tgetent - no screen))))))
+ 
+ AC_TRY_RUN([
++#include <stdlib.h>
+ extern char *tgoto();
+-main()
++int main()
+ {
+  exit(strcmp(tgoto("%p1%d", 0, 1), "1") ? 0 : 1);
+ }], AC_NOTE(- you use the termcap database),
+@@ -296,7 +298,8 @@ AC_TRY_RUN([
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <stdio.h>
+-main()
++#include <stdlib.h>
++int main()
+ {
+   struct stat sb;
+   char *x,*ttyname();
+@@ -402,6 +405,7 @@ AC_CHECKING(signal implementation)
+ AC_TRY_RUN([
+ #include <sys/types.h>
+ #include <signal.h>
++#include <stdlib.h>
+ 
+ #ifndef SIGCLD
+ #define SIGCLD SIGCHLD
+@@ -420,7 +424,7 @@ hand()
+   got++;
+ }
+ 
+-main()
++int main()
+ {
+   /* on hpux we use sigvec to get bsd signals */
+ #ifdef __hpux
+--- a/examples/rlfe/pty.c
++++ b/examples/rlfe/pty.c
+@@ -48,6 +48,8 @@
+ # include <sys/tty.h>
+ # include <sys/sioctl.h>
+ # include <sys/pty.h>
++#else
++# include <pty.h>
+ #endif
+ 
+ #ifdef sgi

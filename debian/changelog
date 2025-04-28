@@ -1,3 +1,51 @@
+readline (8.2-6) unstable; urgency=medium
+
+  * Move lib64 libraries to /usr (Helmut Grohne). Closes: #1088046.
+
+ -- Matthias Klose <doko@debian.org>  Fri, 13 Dec 2024 14:31:14 +0100
+
+readline (8.2-5) unstable; urgency=medium
+
+  * Apply upstream patches 008 - 013.
+  * Fix rlfe FTBFS with GCC 14. Closes: #1075438.
+  * Bump standards version.
+
+ -- Matthias Klose <doko@debian.org>  Tue, 20 Aug 2024 11:17:03 +0200
+
+readline (8.2-4) unstable; urgency=medium
+
+  * Fix shlibs file for t64.
+  * Update symbols files.
+
+ -- Matthias Klose <doko@debian.org>  Sat, 23 Mar 2024 09:45:44 +0100
+
+readline (8.2-3.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Rename libraries for 64-bit time_t transition.  Closes: #1064322
+  * DEP17 P1: Mitigate file loss due to package rename with concurrent
+    aliasing change. Closes: #1064361.
+
+ -- Benjamin Drung <bdrung@debian.org>  Thu, 29 Feb 2024 22:49:06 +0000
+
+readline (8.2-3) unstable; urgency=medium
+
+  * Fix crash in rl_do_undo, taken from upstream. Closes: #1056314, #1037274.
+
+ -- Matthias Klose <doko@debian.org>  Sun, 26 Nov 2023 09:01:05 +0100
+
+readline (8.2-2) unstable; urgency=medium
+
+  * Apply upstream patches 002 - 007.
+  * Move libraries to /usr. (Helmut Grohne). Closes: #1055958.
+  * debian/README.source: Remove. Closes: #1023676.
+  * Remove dependencies on install-info: Closes: #1012425.
+  * Add Homepage attribute. Closes: #1019711.
+  * Bump debhelper and standards versions.
+  * Update watch file.
+
+ -- Matthias Klose <doko@debian.org>  Sat, 25 Nov 2023 11:07:51 +0100
+
 readline (8.2-1.3+pexip24u4) pexip; urgency=medium
 
   * Always write out a fresh copy of /etc/inputrc in the
